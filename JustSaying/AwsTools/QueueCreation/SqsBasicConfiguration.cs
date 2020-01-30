@@ -8,6 +8,8 @@ namespace JustSaying.AwsTools.QueueCreation
         public int DeliveryDelaySeconds { get; set; }
         public int RetryCountBeforeSendingToErrorQueue { get; set; }
         public bool ErrorQueueOptOut { get; set; }
+        public bool ConfigureTopicsAndQueues { get; set; }
+
         public ServerSideEncryption ServerSideEncryption { get; set; }
 
         public SqsBasicConfiguration()
@@ -17,6 +19,7 @@ namespace JustSaying.AwsTools.QueueCreation
             VisibilityTimeoutSeconds = JustSayingConstants.DEFAULT_VISIBILITY_TIMEOUT;
             RetryCountBeforeSendingToErrorQueue = JustSayingConstants.DEFAULT_HANDLER_RETRY_COUNT;
             DeliveryDelaySeconds = JustSayingConstants.MINIMUM_DELIVERY_DELAY;
+            ConfigureTopicsAndQueues = JustSayingConstants.CONFIGURE_TOPICS_AND_QUEUES;
         }
 
         public virtual void Validate()

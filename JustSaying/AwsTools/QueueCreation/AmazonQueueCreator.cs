@@ -60,6 +60,24 @@ namespace JustSaying.AwsTools.QueueCreation
             return !string.IsNullOrWhiteSpace(queueConfig.TopicSourceAccount);
         }
 
+        public async Task<SqsQueueByName> GetQueueWithoutCreation(string region, SqsReadConfiguration queueConfig)
+        {
+            var regionEndpoint = RegionEndpoint.GetBySystemName(region);
+            var sqsclient = _awsClientFactory.GetAwsClientFactory().GetSqsClient(regionEndpoint);
+            var queue = _queueCache.TryGetFromCache(region, queueConfig.QueueName);
+            if (queue != null)
+            {
+                return queue;
+            }
+            queue = new SqsQueueByName(regionEndpoint, queueConfig.QueueName, sqsclient, queueConfig.RetryCountBeforeSendingToErrorQueue, _loggerFactory);
+            var exists = await queue.ExistsAsync().ConfigureAwait(false);
+            if (exists)
+            {
+                _queueCache.AddToCache(region, queue.QueueName, queue);
+            }
+            return queue;
+        }
+
         public async Task<SqsQueueByName> EnsureQueueExistsAsync(string region, SqsReadConfiguration queueConfig)
         {
             var regionEndpoint = RegionEndpoint.GetBySystemName(region);

@@ -59,6 +59,11 @@ namespace JustSaying.AwsTools
         public static int MAXIMUM_DELIVERY_DELAY = 900;          //15 minutes
 
         /// <summary>
+        /// To control creation of topics, queues and notification subscriptions
+        /// </summary>
+        public static bool CONFIGURE_TOPICS_AND_QUEUES = true; 
+
+        /// <summary>
         /// Default ID of an AWS-managed cutomer master key (CMK) for Amazon SQS
         /// </summary>
         public static string DEFAULT_ATTRIBUTE_ENCRYPTION_KEY_ID = "alias/aws/sqs";

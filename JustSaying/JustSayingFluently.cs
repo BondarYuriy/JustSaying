@@ -294,7 +294,16 @@ namespace JustSaying
 
             foreach (var region in Bus.Config.Regions)
             {
-                var queue = _amazonQueueCreator.EnsureTopicExistsWithQueueSubscribedAsync(region, Bus.SerialisationRegister, _subscriptionConfig, Bus.Config.MessageSubjectProvider).GetAwaiter().GetResult();
+                SqsQueueByName queue;
+                if(_subscriptionConfig.ConfigureTopicsAndQueues)
+                {
+                    queue = _amazonQueueCreator.EnsureTopicExistsWithQueueSubscribedAsync(region, Bus.SerialisationRegister, _subscriptionConfig, Bus.Config.MessageSubjectProvider).GetAwaiter().GetResult();
+                }
+                else
+                {
+                    queue = _amazonQueueCreator.GetQueueWithoutCreation(region, _subscriptionConfig).GetAwaiter().GetResult();
+
+                }
                 CreateSubscriptionListener<T>(region, queue);
                 _log.LogInformation($"Created SQS topic subscription - Topic: {_subscriptionConfig.Topic}, QueueName: {_subscriptionConfig.QueueName}");
             }

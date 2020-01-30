@@ -8,5 +8,6 @@ namespace JustSaying.AwsTools.QueueCreation
     {
         Task<SqsQueueByName> EnsureTopicExistsWithQueueSubscribedAsync(string region, IMessageSerialisationRegister serialisationRegister, SqsReadConfiguration queueConfig, IMessageSubjectProvider messageSubjectProvider);
         Task<SqsQueueByName> EnsureQueueExistsAsync(string region, SqsReadConfiguration queueConfig);
+        Task<SqsQueueByName> GetQueueWithoutCreation(string region, SqsReadConfiguration queueConfig);
     }
 }
